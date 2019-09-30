@@ -81,6 +81,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
         }, 1100);
 
         if (!globalScope.token) {
+            console.log(window.takePocket);
             if (window.takePocket) {
                 globalScope.token = window.takePocket();
             } else {
@@ -157,24 +158,40 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                             <div className="page-buttons">
                                 {
                                     this.state.showModal ?
-                                        <div
-                                            className="toggle-back page-button-item"
-                                            onClick={() => {
-                                                this.setState({ showModal: null });
-                                                if (this.state.playMusic) {
-                                                    idleMusic.currentTime = 0;
-                                                    idleMusic.play();
-                                                }
-                                            }}
-                                        >
-                                            <img
-                                                draggable="false"
-                                                width="100%"
-                                                src={require('./rsc/icons8-left-3-96.png')}
-                                                alt="play"
-                                                className="main-menu-button-item animated zoomIn"
-                                            />
-                                        </div>
+                                        this.state.showModal === 'showPlay' ?
+                                            <div
+                                                className="toggle-back page-button-item"
+                                                onClick={() => {
+                                                    this.setState({ showModal: null });
+                                                    if (this.state.playMusic) {
+                                                        idleMusic.currentTime = 0;
+                                                        idleMusic.play();
+                                                    }
+                                                }}
+                                            >
+                                                <img
+                                                    draggable="false"
+                                                    width="100%"
+                                                    src={require('./rsc/icons8-left-3-96.png')}
+                                                    alt="play"
+                                                    className="main-menu-button-item animated zoomIn"
+                                                />
+                                            </div>
+                                            :
+                                            <div
+                                                className="toggle-back page-button-item"
+                                                onClick={() => {
+                                                    this.setState({ showModal: null });
+                                                }}
+                                            >
+                                                <img
+                                                    draggable="false"
+                                                    width="100%"
+                                                    src={require('./rsc/icons8-left-3-96.png')}
+                                                    alt="play"
+                                                    className="main-menu-button-item animated zoomIn"
+                                                />
+                                            </div>
                                         :
                                         null
                                 }
