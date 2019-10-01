@@ -150,10 +150,23 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
     }
 
     shuffleArray = (array) => {
-        const newArr = [];
-        array.forEach((item) => {
-            newArr[Math.floor(Math.random() * 2) ? 'push' : 'unshift'](item);
-        });
+        // const newArr = [];
+        // array.forEach((item) => {
+        //     newArr[Math.floor(Math.random() * 2) ? 'push' : 'unshift'](item);
+        // });
+        // return newArr;
+
+        let index = null;
+        let temp = null;
+        const newArr = [...array];
+        let counter = newArr.length - 1;
+        while (counter > 0) {
+            index = Math.floor(Math.random() * counter);
+            temp = newArr[counter];
+            newArr[counter] = newArr[index];
+            newArr[index] = temp;
+            counter--;
+        }
 
         return newArr;
     }
@@ -295,13 +308,14 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
 
                                 return true;
                             }}
-                            className="flickable-card"
+                            className="flipable-card"
                         >
                             <ReactCardFlip isFlipped={this.state[`fliped_${index}`]}>
                                 <img
                                     draggable="false"
                                     key="back"
                                     width="100%"
+                                    height="100%"
                                     src={require('./rsc/brand_cover.png')}
                                     // src={brandImage}
                                     alt="game card"
@@ -314,11 +328,12 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                     draggable="false"
                                     key="front"
                                     width="100%"
+                                    height="100%"
                                     src={brandImage}
                                     alt="game card"
                                     className={`
                                         game-card-image
-                                        animated ${(this.state.delay) > index * TIME_UNIT ? 'pulse' : 'opacity-zero'}
+                                        ${(this.state.delay) > index * TIME_UNIT ? '' : 'opacity-zero'}
                                         ${this.state.correctMatch[index] ? 'correct-match' : ''}
                                         ${this.state.wrongMatch[index] ? 'wrong-match' : ''}
                                     `}
