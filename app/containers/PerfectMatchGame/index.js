@@ -15,7 +15,7 @@ import injectReducer from 'utils/injectReducer';
 import Countdown from 'react-countdown-now';
 import ReactCardFlip from 'react-card-flip';
 
-import { Events } from 'globalUtils';
+import { dataChecking, Events } from 'globalUtils';
 
 import makeSelectPerfectMatchGame from './selectors';
 import reducer from './reducer';
@@ -211,7 +211,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                     this.setState({
                                         complete: 'lose',
                                     });
-                                    // this.props.onGameLose({ status: 'lose' });
+                                    this.props.onGameLose(0);
                                 }
                                 return <span className="countdown-timer">{seconds}s</span>;
                             }}
@@ -303,8 +303,11 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                             onHand1: null,
                                             onHand2: null,
                                             complete: result || this.state.complete,
+                                        }, () => {
+                                            if (result === 'win') {
+                                                this.props.onGameWin(6);
+                                            }
                                         });
-                                        // this.props.onGameWin({ status: 'win' });
                                     }, 2 * TIME_UNIT);
                                 }
 
@@ -350,22 +353,22 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
 
     renderResult = () => (
         <div>
-            {/* {
-                this.props.gameResultImagelink ?
+            {
+                dataChecking(this.props, 'gameResultImagelink', 'result', 'image', 'mobile') ?
                     <div className="prize-inner-section animated zoomIn">
                         <img
                             draggable="false"
                             key={1}
                             width="100%"
-                            src={this.props.gameResultImagelink}
+                            src={this.props.gameResultImagelink.result.image.desktop}
                             alt="carousel slide show"
                             className="slideshow-image"
                         />
                     </div>
                     :
                     null
-            } */}
-            {
+            }
+            {/* {
                 this.state.complete === 'win' ?
                     <div className="prize-inner-section animated zoomIn">
                         <img
@@ -388,7 +391,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                             className="slideshow-image"
                         />
                     </div>
-            }
+            } */}
         </div>
     )
 

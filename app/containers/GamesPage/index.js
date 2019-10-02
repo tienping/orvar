@@ -25,6 +25,8 @@ import InputForm from 'components/InputForm';
 import PerfectMatchGame from '../PerfectMatchGame';
 import {
     doLogin,
+    getGameToken,
+    getResult,
 } from './actions';
 import makeSelectGamesPage from './selectors';
 import reducer from './reducer';
@@ -68,18 +70,18 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
         this.state = {
             email: '',
             password: '',
-            showPassword: false,
+            gameAccessToken: null,
+            availableChance: null,
             showModal: null,
-            showUsername: false,
             slideArray: null,
             gameId: null,
             // gameId: 1,
             // showModal: 'showPlay',
             playMusic: false,
+            showPassword: false,
             showLogin: false,
             requestToken: false,
             hideLoginModal: false,
-            availableChance: null,
         };
     }
 
@@ -96,10 +98,9 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             } else {
                 this.setState({ requestToken: true });
             }
+        } else {
+            this.props.dispatch(getGameToken());
         }
-
-        // dispatch action, POST https://api.hermo.my/xmas/game, they return gameAccessToken, set in state
-        // set reducer gameAccessToken
         // (if have) set reducer availableChance
     }
 
@@ -110,28 +111,24 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             }, 1000);
         }
 
-        // if (gameAccessToken !== gameAccessToken) {
-        //     // setState gameAccessToken
-        // }
+        if (dataChecking(nextProps, 'gamesPage', 'gameToken', 'success') !== dataChecking(this.props, 'gamesPage', 'gameToken', 'success') && nextProps.gamesPage.gameToken.success) {
+            this.setState({ gameAccessToken: nextProps.gamesPage.gameToken.data.token });
+        }
 
+        if (dataChecking(nextProps, 'gamesPage', 'result') !== dataChecking(this.props, 'gamesPage', 'result') && nextProps.gamesPage.result.success) {
+            this.setState({ gameResultImagelink: nextProps.gamesPage.result.data });
+        }
         // if (availableChance !== availableChance) {
         //     // setState availableChance
         // }
     }
 
-    componentWillReceiveProps = (nextProps) => {
-        if (dataChecking(nextProps, 'gamesPage', 'login', 'success') !== dataChecking(this.props, 'gamesPage', 'login', 'success') && nextProps.gamesPage.login.success) {
-            setTimeout(() => {
-                this.setState({ hideLoginModal: true });
-            }, 1000);
-        }
-    }
-
     onGameComplete = (result) => {
-        alert(JSON.stringify(result));
-
-        // dispatch action(this.state.gameAccessToken, 'success' || 'lose'), PUI https://api.hermo.my/xmas/game, they will return imagelink, show the imagelink
-        // set reducer gameResultImagelink
+        const payload = {
+            score: result,
+            token: this.state.gameAccessToken,
+        };
+        this.props.dispatch(getResult(payload));
     }
 
     handleChange = (event) => {
@@ -324,7 +321,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                         <div
                                             onClick={
                                                 () => {
-                                                    if (!this.state.gameAccessToken) {
+                                                    if (!dataChecking(this.state, 'gameAccessToken')) {
                                                         alert('Please wait while the game loading');
                                                         return null;
                                                     }
