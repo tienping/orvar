@@ -70,6 +70,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             password: '',
             showPassword: false,
             showModal: null,
+            showUsername: false,
             slideArray: null,
             gameId: null,
             // gameId: 1,
@@ -95,6 +96,12 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                 this.setState({ requestToken: true });
             }
         }
+        console.log('globalScope', globalScope);
+        console.log('globalScope.username', globalScope.username);
+
+        // if (globalScope.username) {
+        //     this.setState({ showUsername: true });
+        // }
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -111,7 +118,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
 
     renderLogin = () => (
         <div className="login-container">
-            <form onSubmit={() => { this.props.dispatch(doLogin(this.state)); event.preventDefault(); console.log(this.state.password, this.state.email); }}>
+            <form onSubmit={() => { this.props.dispatch(doLogin(this.state)); event.preventDefault(); }}>
                 <div>
                     <InputForm
                         label="Email address"
@@ -155,6 +162,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             </form>
         </div>
     )
+
     renderModalContent = () => {
         const { showModal, slideArray, gameId } = this.state;
 
@@ -269,9 +277,12 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                             }
                                         </div>
                                     </div>
-                                    <div className="main-menu-username">
-                                        <Typography variant="h5">Welcome, {globalScope.username}!</Typography>
-                                    </div>
+                                    {
+                                        dataChecking(globalScope, 'username') &&
+                                            <div className="main-menu-username animated fadeIn">
+                                                <Typography variant="h5">Welcome, {globalScope.username}!</Typography>
+                                            </div>
+                                    }
                                     <div className="main-menu-buttons animated slideInDown fadeIn">
                                         <div
                                             onClick={
