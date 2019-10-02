@@ -19,6 +19,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'assets/animate.min.scss';
 import {
     Button,
+    Typography,
 } from '@material-ui/core';
 import InputForm from 'components/InputForm';
 import PerfectMatchGame from '../PerfectMatchGame';
@@ -267,6 +268,9 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                                     />
                                             }
                                         </div>
+                                    </div>
+                                    <div className="main-menu-username">
+                                        <Typography variant="h5">Welcome, {globalScope.username}!</Typography>
                                     </div>
                                     <div className="main-menu-buttons animated slideInDown fadeIn">
                                         <div
