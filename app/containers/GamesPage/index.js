@@ -303,7 +303,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                     <div className="main-menu-bottom-content animated slideInDown fadeIn">
                                         <div className="game-info pb-1">
                                             {
-                                                dataChecking(globalScope, 'username') &&
+                                                dataChecking(globalScope, 'profile') &&
                                                     <div className="main-menu-username animated fadeIn">
                                                         <Typography variant="h5">Welcome, {globalScope.profile.name || globalScope.profile.username}!</Typography>
                                                     </div>
