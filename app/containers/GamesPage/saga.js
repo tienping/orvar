@@ -27,7 +27,7 @@ export function* loginQuery(action) {
             setCookie(process.env.TOKEN_KEY, globalScope.token);
             const profileResponse = yield call(apiRequest, '/profile');
             if (profileResponse && profileResponse.ok) {
-                globalScope.username = profileResponse.data.username;
+                globalScope.profile = profileResponse.data;
                 yield put(loginSuccess(loginResponse.data));
             } else if (profileResponse && profileResponse.ok === false) {
                 yield put(getGameTokenFailed(profileResponse.data));
