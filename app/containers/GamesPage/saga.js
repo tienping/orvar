@@ -30,7 +30,7 @@ export function* loginQuery(action) {
                 globalScope.profile = profileResponse.data;
                 yield put(loginSuccess(loginResponse.data));
             } else if (profileResponse && profileResponse.ok === false) {
-                yield put(getGameTokenFailed(profileResponse.data));
+                yield put(loginFailed(profileResponse.data));
             } else {
                 err = staticErrorResponse({ text: 'No response from server' });
                 throw err;
@@ -78,11 +78,7 @@ export function* getGameTokenQuery() {
 export function* getResultQuery(action) {
     let err;
     try {
-        const payload = JSON.stringify({
-            token: action.payload.token,
-            score: action.payload.score,
-        });
-        const response = yield call(apiRequest, '/xmas/game', 'put', payload);
+        const response = yield call(apiRequest, '/xmas/game', 'put', JSON.stringify(action.payload));
         if (response && response.ok !== false) {
             yield put(getResultSuccess(response.data));
         } else if (response && response.ok === false) {

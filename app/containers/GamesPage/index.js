@@ -98,7 +98,8 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             } else {
                 this.setState({ requestToken: true });
             }
-        } else {
+        }
+        if (globalScope.token) {
             this.props.dispatch(getGameToken());
         }
         // (if have) set reducer availableChance
@@ -123,12 +124,8 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
         // }
     }
 
-    onGameComplete = (result) => {
-        const payload = {
-            score: result,
-            token: this.state.gameAccessToken,
-        };
-        this.props.dispatch(getResult(payload));
+    onGameComplete = (payload) => {
+        this.props.dispatch(getResult({ ...payload, token: this.state.gameAccessToken }));
     }
 
     handleChange = (event) => {

@@ -211,7 +211,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                     this.setState({
                                         complete: 'lose',
                                     });
-                                    this.props.onGameLose(0);
+                                    this.props.onGameLose({ score: '0' });
                                 }
                                 return <span className="countdown-timer">{seconds}s</span>;
                             }}
@@ -305,7 +305,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                             complete: result || this.state.complete,
                                         }, () => {
                                             if (result === 'win') {
-                                                this.props.onGameWin(6);
+                                                this.props.onGameWin({ score: 6 });
                                             }
                                         });
                                     }, 2 * TIME_UNIT);
