@@ -22,6 +22,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import InputForm from 'components/InputForm';
+import AuthPage from '../AuthPage';
 import PerfectMatchGame from '../PerfectMatchGame';
 import {
     doLogin,
@@ -279,8 +280,9 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                     </div>
                     {
                         this.state.requestToken && !this.state.hideLoginModal ?
-                            <span className="games-login-modal animated fa">
-                                {this.renderLogin()}
+                            <span className="games-login-modal animated fa" style={{ backgroundColor: 'rgba(255,255,255,0.7)', overflow: 'auto' }}>
+                                {/* {this.renderLogin()} */}
+                                <AuthPage isModal={true} />
                             </span>
                             :
                             <div className="main-menu-wrapper">
