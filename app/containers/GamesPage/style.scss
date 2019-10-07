@@ -81,21 +81,11 @@
         max-height: 100vh;
     }
 
-    .main-menu-username {
+    .main-menu-bottom-content {
         position: absolute;
         z-index: 10;
         margin: auto;
-        bottom: 35%;
-        left: 0;
-        right: 0;
-        text-align: center;
-    }
-
-    .main-menu-buttons {
-        position: absolute;
-        z-index: 10;
-        margin: auto;
-        bottom: 10%;
+        top: 62%;
         left: 0;
         right: 0;
         text-align: center;
@@ -108,8 +98,8 @@
             transition: transform .5s, background-color.5s;
 
             &:hover {
-                transform: scale(1.02);
-                background-color: #0002;
+                transform: scale(1.05);
+                // background-color: #0002;
             }
         }
     }
