@@ -71,8 +71,7 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.signUpPage.signupSuccess !== this.props.signUpPage.signupSuccess && nextProps.signUpPage.signupSuccess) {
-            window.location.href = globalScope.previousPage || window.location.pathname;
-            console.log(window.location.href);
+            window.location.href = globalScope.previousPage || '/';
         }
 
         if (nextProps.error !== this.props.error && nextProps.error) {
@@ -290,9 +289,9 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
             <Button
                 type="submit"
                 variant="contained"
-                color="secondary"
+                style={{ backgroundColor: '#3b5998', color: 'white' }}
             >
-                <Typography>FACEBOOK</Typography>
+                <Typography>LOGIN WITH FACEBOOK</Typography>
             </Button>
         </FormControl>
     )
