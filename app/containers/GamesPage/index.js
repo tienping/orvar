@@ -26,7 +26,6 @@ import AuthPage from '../AuthPage';
 import PerfectMatchGame from '../PerfectMatchGame';
 import {
     doLogin,
-    getGameToken,
     getResult,
 } from './actions';
 import makeSelectGamesPage from './selectors';
@@ -71,7 +70,6 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
         this.state = {
             email: '',
             password: '',
-            gameAccessToken: null,
             availableChance: null,
             showModal: null,
             slideArray: null,
@@ -100,9 +98,6 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                 this.setState({ requestToken: true });
             }
         }
-        if (globalScope.token) {
-            this.props.dispatch(getGameToken());
-        }
         // (if have) set reducer availableChance
     }
 
@@ -111,10 +106,6 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             setTimeout(() => {
                 this.setState({ hideLoginModal: true });
             }, 1000);
-        }
-
-        if (dataChecking(nextProps, 'gamesPage', 'gameToken', 'success') !== dataChecking(this.props, 'gamesPage', 'gameToken', 'success') && nextProps.gamesPage.gameToken.success) {
-            this.setState({ gameAccessToken: nextProps.gamesPage.gameToken.data.token });
         }
 
         if (dataChecking(nextProps, 'gamesPage', 'result') !== dataChecking(this.props, 'gamesPage', 'result') && nextProps.gamesPage.result.success) {
@@ -126,9 +117,16 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
     }
 
     onGameComplete = (payload) => {
-        this.props.dispatch(getResult({ ...payload, token: this.state.gameAccessToken }));
+        this.props.dispatch(getResult(payload));
     }
 
+    onBackToMenu = () => {
+        this.setState({ showModal: null });
+        if (this.state.playMusic && this.state.showModal === 'showPlay') {
+            idleMusic.currentTime = 0;
+            idleMusic.play();
+        }
+    }
     handleChange = (event) => {
         this.setState({ [event.target.id]: event.target.value });
     };
@@ -191,8 +189,9 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                         props={{ smth: true }}
                         playMusic={this.state.playMusic}
                         onGameStart={() => alert('gamestart')}
-                        onGameWin={(result) => this.onGameComplete(result)}
-                        onGameLose={(result) => this.onGameComplete(result)}
+                        onGameWin={(payload) => this.onGameComplete(payload)}
+                        onGameLose={(payload) => this.onGameComplete(payload)}
+                        onBackToMenu={this.onBackToMenu}
                         gameResultImagelink={this.state.gameResultImagelink}
                     />
                 );
@@ -232,13 +231,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                             this.state.showModal ?
                                 <div
                                     className="toggle-back page-button-item"
-                                    onClick={() => {
-                                        this.setState({ showModal: null });
-                                        if (this.state.playMusic && this.state.showModal === 'showPlay') {
-                                            idleMusic.currentTime = 0;
-                                            idleMusic.play();
-                                        }
-                                    }}
+                                    onClick={() => this.onBackToMenu()}
                                 >
                                     <img
                                         draggable="false"
@@ -320,11 +313,6 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                         <div
                                             onClick={
                                                 () => {
-                                                    if (!dataChecking(this.state, 'gameAccessToken')) {
-                                                        alert('Please wait while the game loading');
-                                                        return null;
-                                                    }
-
                                                     if (this.state.playMusic) {
                                                         const startSound = new Audio(require('./rsc/sound/Start_button.wav'));
                                                         startSound.play();
