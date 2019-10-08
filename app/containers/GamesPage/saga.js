@@ -3,14 +3,11 @@ import { staticErrorResponse, apiRequest, setCookie } from 'globalUtils';
 import globalScope from 'globalScope';
 import {
     AUTH_LOGIN,
-    GET_GAME_TOKEN,
     GET_RESULT,
 } from './constants';
 import {
     loginSuccess,
     loginFailed,
-    getGameTokenSuccess,
-    getGameTokenFailed,
     getResultSuccess,
     getResultFailed,
 } from './actions';
@@ -35,20 +32,6 @@ export function* loginQuery(action) {
                 err = staticErrorResponse({ text: 'No response from server' });
                 throw err;
             }
-            try {
-                const gameResponse = yield call(apiRequest, '/xmas/game', 'post');
-                if (gameResponse && gameResponse.ok !== false) {
-                    yield put(getGameTokenSuccess(gameResponse.data));
-                } else if (gameResponse && gameResponse.ok === false) {
-                    yield put(getGameTokenFailed(gameResponse.data));
-                } else {
-                    err = staticErrorResponse({ text: 'No response from server' });
-                    throw err;
-                }
-            } catch (e) {
-                console.log('error: ', e);
-                yield put(getGameTokenFailed(e));
-            }
         } else {
             yield put(loginFailed(loginResponse.data));
         }
@@ -57,23 +40,6 @@ export function* loginQuery(action) {
     }
 }
 
-export function* getGameTokenQuery() {
-    let err;
-    try { // Trying the HTTP Request
-        const response = yield call(apiRequest, '/xmas/game', 'post');
-        if (response && response.ok !== false) {
-            yield put(getGameTokenSuccess(response.data));
-        } else if (response && response.ok === false) {
-            yield put(getGameTokenFailed(response.data));
-        } else {
-            err = staticErrorResponse({ text: 'No response from server' });
-            throw err;
-        }
-    } catch (e) {
-        console.log('error: ', e);
-        yield put(getGameTokenFailed(e));
-    }
-}
 
 export function* getResultQuery(action) {
     let err;
@@ -95,6 +61,5 @@ export function* getResultQuery(action) {
 // Individual exports for testing
 export default function* gamesPageSaga() {
     yield takeLatest(AUTH_LOGIN, loginQuery);
-    yield takeLatest(GET_GAME_TOKEN, getGameTokenQuery);
     yield takeLatest(GET_RESULT, getResultQuery);
 }
