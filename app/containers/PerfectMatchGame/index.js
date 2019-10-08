@@ -41,7 +41,7 @@ import './style.scss';
 
 const TIME_UNIT = 330;
 const shareUrl = 'https://app.hermo.my/N1B7NUpi3Z';
-const shareTitle = 'Hey i found ';
+const shareTitle = '';
 const shareHashtag = '#FUNFACTS';
 const shareVia = '';
 const BRANDS = [
@@ -165,7 +165,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
         setTimeout(() => {
             this.setState({
                 delay: 24 * TIME_UNIT,
-                countingDown: Date.now() + (30400 - 20000),
+                countingDown: Date.now() + (30400),
                 tips: 'Try to get a match!',
                 flipped_0: true,
                 flipped_1: true,
@@ -407,9 +407,9 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
 
     renderResult = () => (
         <div className="result-screen-content">
-            {
-                dataChecking(this.props, 'gameResultImagelink', 'result', 'image', 'mobile') ?
-                    <div className="prize-inner-section animated zoomIn">
+            <div className="prize-inner-section animated zoomIn">
+                {
+                    dataChecking(this.props, 'gameResultImagelink', 'result', 'image', 'mobile') ?
                         <img
                             draggable="false"
                             width="100%"
@@ -418,93 +418,51 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                             alt="result background"
                             className="result-image"
                         />
-                        <span className="result-bottom-content">
-                            <div
-                                className="menu result-content"
-                                onClick={this.props.onBackToMenu}
-                            >
-                                <img
-                                    className="result-button-item animated zoomIn"
-                                    draggable="false"
-                                    src={require('./rsc/D11-Button-Image_Menu_243x332.png')}
-                                    alt="menu button"
-                                />
-                            </div>
-                            <div
-                                className="share result-content"
-                                onClick={() => this.setState({ shareModal: true })}
-                            >
-                                <img
-                                    className="result-button-item animated zoomIn"
-                                    draggable="false"
-                                    src={require('./rsc/D11-Button-Image_Share_243x332.png')}
-                                    alt="share button"
-                                />
-                            </div>
-                            <div
-                                className="replay result-content"
-                                onClick={() => {
-                                    this.props.dispatch(getGameToken());
-                                    this.setState({
-                                        ...initialState,
-                                        brandArr: this.shuffleArray([...BRANDS, ...BRANDS]),
-                                    });
-                                }}
-                            >
-                                <img
-                                    className="result-button-item animated zoomIn"
-                                    draggable="false"
-                                    src={require('./rsc/D11-Button-Image_Replay_243x332.png')}
-                                    alt="replay button"
-                                />
-                            </div>
-                        </span>
+                        :
+                        null
+                }
+                <span className="result-bottom-content">
+                    <div
+                        className="menu result-content"
+                        onClick={this.props.onBackToMenu}
+                    >
+                        <img
+                            className="result-button-item animated zoomIn"
+                            draggable="false"
+                            src={require('./rsc/D11-Button-Image_Menu_243x332.png')}
+                            alt="menu button"
+                        />
                     </div>
-                    :
-                    <div className="prize-inner-section animated zoomIn">
-                        <span className="result-bottom-content">
-                            <div
-                                className="menu result-content"
-                                onClick={this.props.onBackToMenu}
-                            >
-                                <img
-                                    className="result-button-item animated zoomIn"
-                                    draggable="false"
-                                    src={require('./rsc/D11-Button-Image_Menu_243x332.png')}
-                                    alt="menu button"
-                                />
-                            </div>
-                            <div
-                                className="share result-content"
-                                onClick={() => this.setState({ shareModal: true })}
-                            >
-                                <img
-                                    className="result-button-item animated zoomIn"
-                                    draggable="false"
-                                    src={require('./rsc/D11-Button-Image_Share_243x332.png')}
-                                    alt="share button"
-                                />
-                            </div>
-                            <div
-                                className="replay result-content"
-                                onClick={() => {
-                                    this.props.dispatch(getGameToken());
-                                    this.setState({
-                                        ...initialState,
-                                        brandArr: this.shuffleArray([...BRANDS, ...BRANDS]),
-                                    });
-                                }}
-                            >
-                                <img
-                                    className="result-button-item animated zoomIn"
-                                    draggable="false"
-                                    src={require('./rsc/D11-Button-Image_Replay_243x332.png')}
-                                    alt="replay button"
-                                />
-                            </div>
-                        </span>
+                    <div
+                        className="share result-content"
+                        onClick={() => this.setState({ shareModal: true })}
+                    >
+                        <img
+                            className="result-button-item animated zoomIn"
+                            draggable="false"
+                            src={require('./rsc/D11-Button-Image_Share_243x332.png')}
+                            alt="share button"
+                        />
                     </div>
-            }
+                    <div
+                        className="replay result-content"
+                        onClick={() => {
+                            this.props.dispatch(getGameToken());
+                            this.setState({
+                                ...initialState,
+                                brandArr: this.shuffleArray([...BRANDS, ...BRANDS]),
+                            });
+                        }}
+                    >
+                        <img
+                            className="result-button-item animated zoomIn"
+                            draggable="false"
+                            src={require('./rsc/D11-Button-Image_Replay_243x332.png')}
+                            alt="replay button"
+                        />
+                    </div>
+                </span>
+            </div>
         </div>
     )
 
