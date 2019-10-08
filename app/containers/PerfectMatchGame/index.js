@@ -40,7 +40,10 @@ import saga from './saga';
 import './style.scss';
 
 const TIME_UNIT = 330;
-
+const shareUrl = 'https://app.hermo.my/N1B7NUpi3Z';
+const shareTitle = 'Hey i found ';
+const shareHashtag = '#FUNFACTS';
+const shareVia = '';
 const BRANDS = [
     require('./rsc/brands/D11-Brand_Image_Au-Fairy_300x300.jpg'),
     require('./rsc/brands/D11-Brand_Image_COSRX_300x300.jpg'),
@@ -162,8 +165,8 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
         setTimeout(() => {
             this.setState({
                 delay: 24 * TIME_UNIT,
-                countingDown: Date.now() + (30400),
-                tips: 'Try to get a match',
+                countingDown: Date.now() + (30400 - 20000),
+                tips: 'Try to get a match!',
                 flipped_0: true,
                 flipped_1: true,
                 flipped_2: true,
@@ -247,13 +250,12 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                     if (this.props.playMusic) {
                                         loseSound.play();
                                     }
-                                    alert('lost');
                                     this.setState({
                                         complete: 'lose',
                                     });
                                     this.props.onGameLose({ score: 0, token: this.state.gameAccessToken });
                                 }
-                                return <span className="countdown-timer">{seconds}s</span>;
+                                return <span className="countdown-timer" style={{ fontSize: '2.5rem' }}>{seconds}s</span>;
                             }}
                         />
                         :
@@ -261,19 +263,19 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                             {
                                 (() => {
                                     if (this.state.delay < 15 * TIME_UNIT) {
-                                        return 'MEMORISE';
+                                        return 'Memorise the cards!';
                                     } else if (this.state.delay < 21 * TIME_UNIT) {
-                                        return 'READY';
+                                        return 'Ready?';
                                     }
 
-                                    return 'GO';
+                                    return 'GO!';
                                 })()
                             }
                         </div>
                 }
             </div>
             {/* <div onClick={() => this.setState({ brandArr: this.shuffleArray([...BRANDS, ...BRANDS]) })}>randomise</div> */}
-            <div>{this.state.tips}</div>
+            <div className="perfect-game-tips p-1" style={{ fontSize: '1.5rem' }}>{this.state.tips}</div>
             <div className="card-field">
                 {
                     this.state.brandArr && this.state.brandArr.map((brandImage, index) => (
@@ -322,7 +324,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                             const correctSound = new Audio(require('./rsc/sound/flip_correct.mp3'));
                                             correctSound.play();
                                         }
-                                        obj.tips = 'Its a perfect match!';
+                                        obj.tips = 'It’s a perfect match!';
                                         obj.correctMatch[index] = true;
                                         obj.correctMatch[obj.onHand1.index] = true;
 
@@ -331,13 +333,12 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                             if (this.props.playMusic) {
                                                 winSound.play();
                                             }
-                                            alert('win');
                                             result = 'win';
                                         }
                                     } else {
                                         obj.wrongMatch[index] = true;
                                         obj.wrongMatch[obj.onHand1.index] = true;
-                                        obj.tips = 'Oops! That\s not a match.';
+                                        obj.tips = 'Oops! That’s not a match.';
                                         if (this.props.playMusic) {
                                             const bombSound = new Audio(require('./rsc/sound/Bomb.mp3'));
                                             bombSound.play();
@@ -411,11 +412,11 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                     <div className="prize-inner-section animated zoomIn">
                         <img
                             draggable="false"
-                            key={1}
                             width="100%"
+                            key={1}
                             src={this.props.gameResultImagelink.result.image.desktop}
-                            alt="carousel slide show"
-                            className="slideshow-image"
+                            alt="result background"
+                            className="result-image"
                         />
                         <span className="result-bottom-content">
                             <div
@@ -425,7 +426,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                 <img
                                     className="result-button-item animated zoomIn"
                                     draggable="false"
-                                    src={require('./rsc/button_menu.png')}
+                                    src={require('./rsc/D11-Button-Image_Menu_243x332.png')}
                                     alt="menu button"
                                 />
                             </div>
@@ -436,7 +437,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                 <img
                                     className="result-button-item animated zoomIn"
                                     draggable="false"
-                                    src={require('./rsc/button_share.png')}
+                                    src={require('./rsc/D11-Button-Image_Share_243x332.png')}
                                     alt="share button"
                                 />
                             </div>
@@ -453,7 +454,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                 <img
                                     className="result-button-item animated zoomIn"
                                     draggable="false"
-                                    src={require('./rsc/button_replay.png')}
+                                    src={require('./rsc/D11-Button-Image_Replay_243x332.png')}
                                     alt="replay button"
                                 />
                             </div>
@@ -469,7 +470,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                 <img
                                     className="result-button-item animated zoomIn"
                                     draggable="false"
-                                    src={require('./rsc/button_menu.png')}
+                                    src={require('./rsc/D11-Button-Image_Menu_243x332.png')}
                                     alt="menu button"
                                 />
                             </div>
@@ -480,7 +481,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                 <img
                                     className="result-button-item animated zoomIn"
                                     draggable="false"
-                                    src={require('./rsc/button_share.png')}
+                                    src={require('./rsc/D11-Button-Image_Share_243x332.png')}
                                     alt="share button"
                                 />
                             </div>
@@ -497,7 +498,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                 <img
                                     className="result-button-item animated zoomIn"
                                     draggable="false"
-                                    src={require('./rsc/button_replay.png')}
+                                    src={require('./rsc/D11-Button-Image_Replay_243x332.png')}
                                     alt="replay button"
                                 />
                             </div>
@@ -507,61 +508,56 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
         </div>
     )
 
-    renderDialogContent = () => {
-        const shareUrl = window.location.href;
-        const shareTitle = '';
-        const shareHashtag = '';
-        const shareVia = '';
-        return (
-            <div>
-                <div className="share-dialog-title">
-                    Share to others!
-                </div>
-                <span className="share-dialog-content">
-                    <div className="facebook share-content">
-                        <FacebookShareButton
-                            className="facebook share-button-item"
-                            url={shareUrl}
-                            quote={shareTitle}
-                            hashtag={shareHashtag}
-                        >
-                            <FacebookIcon round={true} />
-                        </FacebookShareButton>
-                    </div>
-                    <div className="twitter share-content">
-                        <TwitterShareButton
-                            className="twitter share-button-item"
-                            url={shareUrl}
-                            title={shareTitle}
-                            via={shareVia}
-                            hashtag={shareHashtag}
-                        >
-                            <TwitterIcon round={true} />
-                        </TwitterShareButton>
-                    </div>
-                    <div className="telegram share-content">
-                        <TelegramShareButton
-                            className="telegram share-button-item"
-                            url={shareUrl}
-                            title={shareTitle}
-                        >
-                            <TelegramIcon round={true} />
-                        </TelegramShareButton>
-                    </div>
-                    <div className="whatsapp share-content">
-                        <WhatsappShareButton
-                            className="whatsapp share-button-item"
-                            url={shareUrl}
-                            title={shareTitle}
-                            separator="\n"
-                        >
-                            <WhatsappIcon round={true} />
-                        </WhatsappShareButton>
-                    </div>
-                </span>
+    renderDialogContent = () => (
+        <div>
+            <div className="share-dialog-title">
+                Share to others!
             </div>
-        );
-    }
+            <span className="share-dialog-content">
+                <div className="facebook share-content">
+                    <FacebookShareButton
+                        className="facebook share-button-item"
+                        url={shareUrl}
+                        quote={shareTitle}
+                        hashtag={shareHashtag}
+                    >
+                        <FacebookIcon round={true} />
+                    </FacebookShareButton>
+                </div>
+                <div className="twitter share-content">
+                    <TwitterShareButton
+                        className="twitter share-button-item"
+                        url={shareUrl}
+                        title={shareTitle}
+                        via={shareVia}
+                        hashtag={shareHashtag}
+                    >
+                        <TwitterIcon round={true} />
+                    </TwitterShareButton>
+                </div>
+                <div className="telegram share-content">
+                    <TelegramShareButton
+                        className="telegram share-button-item"
+                        url={shareUrl}
+                        title={shareTitle}
+                    >
+                        <TelegramIcon round={true} />
+                    </TelegramShareButton>
+                </div>
+                <div className="whatsapp share-content">
+                    <WhatsappShareButton
+                        className="whatsapp share-button-item"
+                        url={shareUrl}
+                        title={shareTitle}
+                        separator="\n"
+                    >
+                        <WhatsappIcon round={true} />
+                    </WhatsappShareButton>
+                </div>
+            </span>
+        </div>
+    )
+
     render() {
         return (
             <div className="perfect-match-game-page animated fadeIn">
