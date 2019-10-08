@@ -88,18 +88,23 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
     componentDidMount = () => {
         document.ondragstart = () => null;
         Events.trigger('hideHeader', {});
+        Events.trigger('hideFooter', {});
         setTimeout(() => {
             this.setState({ isRendered: true });
         }, 1100);
 
-        if (!globalScope.token) {
-            if (window.takePocket) {
-                globalScope.token = window.takePocket();
-            } else {
-                this.setState({ requestToken: true });
-            }
+        alert('taking pocket');
+        if (window.takePocket) {
+            const pocket = window.takePocket();
+            alert(pocket);
+            globalScope.token = window.takePocket();
+        } else if (!globalScope.token) {
+            alert('no take pocket and no token');
+            globalScope.previousPage = window.location.pathname;
+            this.setState({ requestToken: true });
+        } else {
+            alert(`no take pocket and use token ${globalScope.token}`);
         }
-        // (if have) set reducer availableChance
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -360,9 +365,31 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                 </div>
                             </div>
                     }
+                    <div
+                        className="ppg-version"
+                        onClick={() => {
+                            if (window.onCloseWindow) {
+                                alert('window.onCloseWindow');
+                                if (window.takePocket) {
+                                    const pocket = window.takePocket();
+                                    alert(pocket);
+                                    globalScope.token = window.takePocket();
+                                } else if (!globalScope.token) {
+                                    alert('no take pocket and no token');
+                                    globalScope.previousPage = window.location.pathname;
+                                    this.setState({ requestToken: true });
+                                } else {
+                                    alert(`no take pocket and use token ${globalScope.token}`);
+                                }
+                                window.onCloseWindow();
+                            } else {
+                                alert('window.onCloseWindow not found');
+                            }
+                        }}
+                    >0.0.1</div>
                     <img
                         draggable="false"
-                        src={require('./rsc/D11-Landing-image.jpg')}
+                        src={require('./rsc/D11-Landing-image-v2.jpg')}
                         alt="main menu background"
                         className="main-menu-bg animated fadeIn"
                     />
