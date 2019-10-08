@@ -165,7 +165,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
         setTimeout(() => {
             this.setState({
                 delay: 24 * TIME_UNIT,
-                countingDown: Date.now() + (30400),
+                countingDown: Date.now() + (30400 - 20000),
                 tips: 'Try to get a match!',
                 flipped_0: true,
                 flipped_1: true,
@@ -255,7 +255,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                                     });
                                     this.props.onGameLose({ score: 0, token: this.state.gameAccessToken });
                                 }
-                                return <span className="countdown-timer" style={{ fontSize: '2.5rem' }}>{seconds}s</span>;
+                                return <span className="countdown-timer" style={{ fontSize: '2.5em' }}>{seconds}s</span>;
                             }}
                         />
                         :
@@ -275,7 +275,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
                 }
             </div>
             {/* <div onClick={() => this.setState({ brandArr: this.shuffleArray([...BRANDS, ...BRANDS]) })}>randomise</div> */}
-            <div className="perfect-game-tips p-1" style={{ fontSize: '1.5rem' }}>{this.state.tips}</div>
+            <div className="perfect-game-tips p-1" style={{ fontSize: '1.5em' }}>{this.state.tips}</div>
             <div className="card-field">
                 {
                     this.state.brandArr && this.state.brandArr.map((brandImage, index) => (
