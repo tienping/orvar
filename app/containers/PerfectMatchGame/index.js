@@ -42,7 +42,7 @@ import './style.scss';
 const TIME_UNIT = 330;
 const shareUrl = 'https://app.hermo.my/N1B7NUpi3Z';
 const shareTitle = '';
-const shareHashtag = '#FUNFACTS';
+const shareHashtag = '#Double11Fiesta';
 const shareVia = '';
 const BRANDS = [
     require('./rsc/brands/D11-Brand_Image_Au-Fairy_300x300.jpg'),
