@@ -165,7 +165,7 @@ export class PerfectMatchGame extends React.PureComponent { // eslint-disable-li
         setTimeout(() => {
             this.setState({
                 delay: 24 * TIME_UNIT,
-                countingDown: Date.now() + (30400 - 20000),
+                countingDown: Date.now() + (30400),
                 tips: 'Try to get a match!',
                 flipped_0: true,
                 flipped_1: true,
