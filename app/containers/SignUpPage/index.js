@@ -7,6 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
@@ -20,11 +21,12 @@ import {
     Container,
     FormControl,
     FormHelperText,
-    Typography,
     Grid,
-    Select,
     InputLabel,
+    Link,
     OutlinedInput,
+    Select,
+    Typography,
 } from '@material-ui/core';
 import ErrorMessage from 'components/ErrorMessage';
 import { dataChecking } from 'globalUtils';
@@ -273,6 +275,12 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
                     autoComplete="off"
                 />
             </FormControl>
+            <FormControl fullWidth={true}>
+                <ReCAPTCHA
+                    sitekey="6LcKZVMUAAAAABT4fKxxTImskc2dTbY5J8QjsXFa"
+                    style={{ margin: 'auto' }}
+                />
+            </FormControl>
         </div>
     )
 
@@ -307,7 +315,6 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
                         <form onSubmit={this.handleSubmit}>
                             <CardContent>
                                 {this.formInput()}
-                                {/* Add reCAPTCHA*/}
                             </CardContent>
                             {
                                 this.props.signUpPage.error && <ErrorMessage error={this.props.signUpPage.error} type="danger" />
@@ -318,7 +325,7 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
                         </form>
                         <div className="text-xs-center">
                             <Typography className="mt-1" variant="caption" color="textSecondary">
-                                By signing up, you agree to the <a href="https://www.hermo.my/about#/userterm?ucf=login-modal"><u>Terms & Conditions</u></a> and will automatically receive insider offers via email.{/* Need to add Link for Terms and condition */}
+                                By signing up, you agree to the <Link href="https://www.hermo.my/about#/userterm?ucf=login-modal"><u>Terms & Conditions</u></Link> and will automatically receive insider offers via email.{/* Need to add Link for Terms and condition */}
                             </Typography>
                         </div>
                     </Container>
