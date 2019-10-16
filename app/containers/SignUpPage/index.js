@@ -177,7 +177,7 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
         <div>
             <InputLabel className="text-capitalize pb-half">Mobile number</InputLabel>
             <Grid container={true} direction="row" justify="space-around" align="stretch">
-                <Grid item={true} xs={3}>
+                <Grid item={true} xs={4} sm={3}>
                     <FormControl variant="outlined">
                         <Select
                             native={true}
@@ -193,7 +193,7 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item={true} xs={9}>
+                <Grid item={true} xs={8} sm={9}>
                     <FormControl>
                         <InputForm
                             id="sms_number"
