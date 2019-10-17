@@ -175,9 +175,11 @@ export class LoginForm extends React.PureComponent { // eslint-disable-line reac
                             <div className="py-1 px-1">
                                 {this.formInput()}
                                 {this.forgotPassword()}
-                                {
-                                    this.props.loginForm.error && <ErrorMessage className="py-half" error={this.props.loginForm.error} type="danger" />
-                                }
+                                <div className="py-half">
+                                    {
+                                        this.props.loginForm.error && <ErrorMessage error={this.props.loginForm.error} />
+                                    }
+                                </div>
                             </div>
                             <CardActions>
                                 {this.formAction()}

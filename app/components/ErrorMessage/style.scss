@@ -1,15 +1,12 @@
-span {
+.error-messages {
     font-family: "Poppins";
+    font-size: x-small;
 
-    .alert-danger {
-        color: red;
-    }
+    .alert-error { color: rgb(221, 41, 41) }
 
-    .alert-warning {
-        color: yellow;
-    }
+    .alert-danger { color: rgb(221, 41, 41) }
 
-    .alert-success {
-        color: green;
-    }
+    .alert-warning { color: yellow }
+
+    .alert-success { color: rgb(67, 201, 67) }
 }

@@ -137,13 +137,13 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
         return (
             <Grid container={true} className="py-1" justify="space-around" alignItems="center" direction="row">
                 <Grid item={true} className="p-quater" align="center" xs={4}>
-                    <img src={require('resources/authPage/signup-wishlist.png')} alt="Wishlist" style={imgStyle} />
+                    <img src={require('resources/authPage/signup-wishlist.png')} alt="Save your favorites" style={imgStyle} />
                 </Grid>
                 <Grid item={true} className="p-quater" align="center" xs={4}>
-                    <img src={require('resources/authPage/signup-order.png')} alt="Order" style={imgStyle} />
+                    <img src={require('resources/authPage/signup-order.png')} alt="Easily track orders" style={imgStyle} />
                 </Grid>
                 <Grid item={true} className="p-quater" align="center" xs={4}>
-                    <img src={require('resources/authPage/signup-birthday-rewards.png')} alt="rewards" style={imgStyle} />
+                    <img src={require('resources/authPage/signup-birthday-rewards.png')} alt="Birthday rewards" style={imgStyle} />
                 </Grid>
             </Grid>
         );
@@ -214,9 +214,11 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
                     </FormControl>
                 </Grid>
             </Grid>
-            {
-                this.state.sendSuccess ? <Typography variant="caption" className="text-success">{this.props.signUpPage.response.messages[0].text}</Typography> : null
-            }
+            <div className="pb-1">
+                {
+                    dataChecking(this.props, 'signUpPage', 'otp', 'message') && <ErrorMessage error={this.props.signUpPage.otp.message} />
+                }
+            </div>
             <FormControl fullWidth={true}>
                 <InputForm
                     label="OTP Number"
@@ -316,9 +318,9 @@ export class SignUpPage extends React.PureComponent { // eslint-disable-line rea
                             <CardContent>
                                 {this.formInput()}
                             </CardContent>
-                            {
-                                this.props.signUpPage.error && <ErrorMessage error={this.props.signUpPage.error} type="danger" />
-                            }
+                            <div className="py-1 px-2">
+                                {this.props.signUpPage.error && <ErrorMessage error={this.props.signUpPage.error} />}
+                            </div>
                             <CardActions>
                                 {this.formAction()}
                             </CardActions>
