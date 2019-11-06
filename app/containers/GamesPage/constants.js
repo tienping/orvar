@@ -11,3 +11,6 @@ export const AUTH_LOGIN_FAILED = `${page}AUTH_LOGIN_FAILED`;
 export const GET_RESULT = `${page}GET_RESULT`;
 export const GET_RESULT_SUCCESS = `${page}GET_RESULT_SUCCESS`;
 export const GET_RESULT_FAILED = `${page}GET_RESULT_FAILED`;
+export const GET_GAME_INFO = `${page}GET_GAME_INFO`;
+export const GET_GAME_INFO_SUCCESS = `${page}GET_GAME_INFO_SUCCESS`;
+export const GET_GAME_INFO_FAILED = `${page}GET_GAME_INFO_FAILED`;

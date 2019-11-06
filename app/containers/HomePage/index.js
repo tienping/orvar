@@ -188,7 +188,7 @@ export class HomePage extends React.PureComponent {
     renderMobileShortcuts = () => {
         const buttonlink = dataChecking(this.props.homePage, 'store', 'success') && this.props.homePage.store.data.button_link;
         let buttonLinks;
-        if (this.props.homePage.store.success && buttonlink.items) {
+        if (this.props.homePage.store.success && buttonlink && buttonlink.items) {
             const buttonIndex = Object.keys(buttonlink.items);
             buttonLinks = buttonIndex.map((index) => (
                 <Grid key={buttonlink.items[index].id}item={true} xs={3}>

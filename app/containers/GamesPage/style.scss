@@ -133,6 +133,17 @@
             }
         }
     }
+
+    .main-menu-token-indicator {
+        position: absolute;
+        z-index: 100;
+        margin: auto;
+        bottom: 3%;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 1.5em;
+    }
 }
 
 .games-page-popup-modal {

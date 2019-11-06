@@ -25,6 +25,7 @@ import AuthPage from '../AuthPage';
 import PerfectMatchGame from '../PerfectMatchGame';
 import {
     doLogin,
+    getGameInfo,
     getResult,
 } from './actions';
 import makeSelectGamesPage from './selectors';
@@ -33,38 +34,7 @@ import saga from './saga';
 // import messages from './messages';
 import './style.scss';
 
-import mockData from './mockDataReturnFromAPI';
-
-// const prizeSlide = [
-//     {
-//         key: 'prize1',
-//         image: require('./rsc/D11-prize-image.jpg'),
-//         next: null,
-//         prev: null,
-//     // }, {
-//     //     key: 'prize2',
-//     //     image: require('./rsc/prize_two.jpg'),
-//     //     next: 'prize3',
-//     //     prev: 'prize1',
-//     // }, {
-//     //     key: 'prize3',
-//     //     key: 'prize3',
-//     //     image: require('./rsc/prize_three.jpg'),
-//     //     next: null,
-//     //     prev: 'prize2',
-//     },
-// ];
-// const howToSlide = [
-//     {
-//         key: 'how_to',
-//         image: require('./rsc/D11-How-To-Play.jpg'),
-//         next: 'prize2',
-//         prev: null,
-//     },
-// ];
-const idleMusic = new Audio(mockData.config.menu.background_music);
-idleMusic.loop = true;
-const startSound = new Audio(mockData.config.menu.start_sound);
+// import mockData from './mockDataReturnFromAPI';
 
 export class GamesPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
     constructor(props) {
@@ -86,6 +56,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             hideLoginModal: false,
             pageFontSize: '13px',
             showUsername: false,
+            gameInfo: null,
         };
     }
 
@@ -111,6 +82,13 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
             globalScope.previousPage = window.location.pathname;
             this.setState({ requestToken: true, showUsername: true });
         }
+
+        // call API, check status see if true or false
+        const gameId = dataChecking(this.props, 'match', 'params', 'id');
+        if (gameId) {
+            this.setState({ gameId });
+            this.props.dispatch(getGameInfo({ id: gameId }));
+        }
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -122,6 +100,24 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
 
         if (dataChecking(nextProps, 'gamesPage', 'result') !== dataChecking(this.props, 'gamesPage', 'result') && nextProps.gamesPage.result.success) {
             this.setState({ gameResultImagelink: nextProps.gamesPage.result.data });
+        }
+
+        if (dataChecking(nextProps, 'gamesPage', 'gameInfo') !== dataChecking(this.props, 'gamesPage', 'gameInfo') && nextProps.gamesPage.gameInfo.success) {
+            if (dataChecking(nextProps.gamesPage.gameInfo, 'data')) {
+                const gameInfo = nextProps.gamesPage.gameInfo.data;
+                this.setState({ gameInfo });
+
+                if (dataChecking(gameInfo, 'data', 'config', 'menu', 'background_music')) {
+                    this.idleMusic = new Audio(gameInfo.data.config.menu.background_music);
+                    this.idleMusic.loop = true;
+                }
+
+                if (dataChecking(gameInfo, 'data', 'config', 'menu', 'start_sound')) {
+                    this.startSound = new Audio(gameInfo.data.config.menu.start_sound);
+                }
+            }
+
+            console.log(nextProps.gamesPage.gameInfo.data);
         }
     }
 
@@ -142,8 +138,8 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
     onBackToMenu = () => {
         this.setState({ showModal: null });
         if (this.state.playMusic && this.state.showModal === 'showPlay') {
-            idleMusic.currentTime = 0;
-            idleMusic.play();
+            this.idleMusic.currentTime = 0;
+            this.idleMusic.play();
         }
     }
 
@@ -235,20 +231,33 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
         const { showModal, slideArray, gameId } = this.state;
 
         if (showModal === 'showPlay' && gameId) {
-            if (gameId) {
-                idleMusic.pause();
-                return (
-                    <PerfectMatchGame
-                        props={{ smth: true }}
-                        playMusic={this.state.playMusic}
-                        onGameStart={() => alert('gamestart')}
-                        onGameWin={(payload) => this.onGameComplete(payload)}
-                        onGameLose={(payload) => this.onGameComplete(payload)}
-                        onBackToMenu={this.onBackToMenu}
-                        gameResultImagelink={this.state.gameResultImagelink}
-                        gameConfig={mockData.config.game}
-                    />
-                );
+            if (gameId && dataChecking(this.state.gameInfo, 'data', 'type')) {
+                this.idleMusic.pause();
+
+                switch (this.state.gameInfo.data.type) {
+                    case 'mix-and-match':
+                        return (
+                            <PerfectMatchGame
+                                props={{ smth: true }}
+                                playMusic={this.state.playMusic}
+                                onGameStart={() => alert('gamestart')}
+                                onGameWin={(payload) => this.onGameComplete(payload)}
+                                onGameLose={(payload) => this.onGameComplete(payload)}
+                                onBackToMenu={this.onBackToMenu}
+                                gameResultImagelink={this.state.gameResultImagelink}
+                                gameConfig={this.state.gameInfo.data.config.game}
+                            />
+                        );
+                    case 'video-show':
+                        return (
+                            <div>Video-show</div>
+                        );
+
+                    default:
+                        return (
+                            <div>Invalid Game<span>{this.state.gameInfo.data.type}</span></div>
+                        );
+                }
             }
         }
 
@@ -277,6 +286,14 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
     }
 
     render() {
+        if (!dataChecking(this.state, 'gameInfo', 'data', 'config')) {
+            return (
+                <div>Loading....</div>
+            );
+        }
+
+        const gameData = this.state.gameInfo.data;
+
         return (
             <div className="games-page" style={{ fontSize: this.state.pageFontSize }}>
                 <div className="game-container">
@@ -302,7 +319,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                             className="toggle-music page-button-item to-right"
                             onClick={() => {
                                 this.setState({ playMusic: !this.state.playMusic });
-                                idleMusic[!this.state.playMusic ? 'play' : 'pause']();
+                                this.idleMusic[!this.state.playMusic ? 'play' : 'pause']();
                             }}
                         >
                             {
@@ -370,10 +387,10 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                             onClick={
                                                 () => {
                                                     if (this.state.playMusic) {
-                                                        startSound.play();
+                                                        this.startSound.play();
                                                     }
                                                     setTimeout(() => {
-                                                        this.setState({ showModal: 'showPlay', gameId: 1 });
+                                                        this.setState({ showModal: 'showPlay' });
                                                     }, 0);
 
                                                     return true;
@@ -383,34 +400,46 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                                         >
                                             <img
                                                 draggable="false"
-                                                src={require('./rsc/D11-Button-image_Play_529x130.png')}
-                                                alt="play"
+                                                // src={require('./rsc/D11-Button-image_Play_529x130.png')}
+                                                src={gameData.config.menu.start_button}
+                                                alt="Play"
                                                 className="main-menu-button-item"
                                             />
                                         </div>
                                         <div
-                                            onClick={() => this.setState({ showModal: 'slideShow', slideArray: mockData.config.menu.prize_slider })}
+                                            onClick={() => this.setState({ showModal: 'slideShow', slideArray: gameData.config.menu.prize_slider })}
                                             className="animated fadeIn"
                                         >
                                             <img
                                                 draggable="false"
-                                                src={require('./rsc/D11-Button-image_Prize_529x130.png')}
-                                                alt="prizes"
+                                                // src={require('./rsc/D11-Button-image_Prize_529x130.png')}
+                                                src={gameData.config.menu.prizes_button}
+                                                alt="Prizes"
                                                 className="main-menu-button-item"
                                             />
                                         </div>
                                         <div
-                                            onClick={() => this.setState({ showModal: 'slideShow', slideArray: mockData.config.menu.how_to_play_slider })}
+                                            onClick={() => this.setState({ showModal: 'slideShow', slideArray: gameData.config.menu.how_to_play_slider })}
                                             className="animated fadeIn"
                                         >
                                             <img
                                                 draggable="false"
-                                                src={require('./rsc/D11-Button-image_How-to-play_529x130.png')}
-                                                alt="how to play"
+                                                // src={require('./rsc/D11-Button-image_How-to-play_529x130.png')}
+                                                src={gameData.config.menu.how_to_play_button}
+                                                alt="How to Play"
                                                 className="main-menu-button-item"
                                             />
                                         </div>
                                     </div>
+                                    {
+                                        gameData.token_charge ?
+                                            <div className="main-menu-token-indicator">
+                                                <span>Token available: </span>
+                                                <span>5</span>
+                                            </div>
+                                            :
+                                            null
+                                    }
                                 </div>
                             </div>
                     }
@@ -436,7 +465,7 @@ export class GamesPage extends React.PureComponent { // eslint-disable-line reac
                     <img
                         draggable="false"
                         onLoad={this.onBgImageLoaded}
-                        src={require('./rsc/D11-Landing-image-v2.jpg')}
+                        src={gameData.config.menu.background_image}
                         alt="main menu background"
                         className="main-menu-bg animated fadeIn"
                     />

@@ -4,12 +4,15 @@ import globalScope from 'globalScope';
 import {
     AUTH_LOGIN,
     GET_RESULT,
+    GET_GAME_INFO,
 } from './constants';
 import {
     loginSuccess,
     loginFailed,
     getResultSuccess,
     getResultFailed,
+    getGameInfoSuccess,
+    getGameInfoFailed,
 } from './actions';
 
 export function* loginQuery(action) {
@@ -58,8 +61,30 @@ export function* getResultQuery(action) {
         yield put(getResultFailed(e));
     }
 }
+
+
+export function* getGameInfo(action) {
+    let err;
+    try {
+        const response = yield call(apiRequest, `/gamesetup/${action.gameParams.id}`, 'get', null, process.env.GAMI_API_URL);
+        if (response && response.ok !== false) {
+            yield put(getGameInfoSuccess(response.data));
+        } else if (response && response.ok === false) {
+            yield put(getGameInfoFailed(response.data));
+        } else {
+            err = staticErrorResponse({ text: 'No response from server' });
+            throw err;
+        }
+    } catch (e) {
+        console.log('error: ', e);
+        yield put(getGameInfoFailed(e));
+    }
+}
+
+
 // Individual exports for testing
 export default function* gamesPageSaga() {
     yield takeLatest(AUTH_LOGIN, loginQuery);
     yield takeLatest(GET_RESULT, getResultQuery);
+    yield takeLatest(GET_GAME_INFO, getGameInfo);
 }

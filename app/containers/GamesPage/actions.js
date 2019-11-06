@@ -11,6 +11,9 @@ import {
     GET_RESULT,
     GET_RESULT_SUCCESS,
     GET_RESULT_FAILED,
+    GET_GAME_INFO,
+    GET_GAME_INFO_SUCCESS,
+    GET_GAME_INFO_FAILED,
 } from './constants';
 
 export function doLogin(loginData) {
@@ -25,12 +28,14 @@ export function loginSuccess(response) {
         response,
     };
 }
-export function loginFailed(response) {
+export function loginFailed(payload) {
     return {
         type: AUTH_LOGIN_FAILED,
-        payload: response,
+        payload,
     };
 }
+
+
 export function getResult(payload) {
     return {
         type: GET_RESULT,
@@ -43,9 +48,29 @@ export function getResultSuccess(resultData) {
         resultData,
     };
 }
-export function getResultFailed(resultData) {
+export function getResultFailed(payload) {
     return {
         type: GET_RESULT_FAILED,
-        payload: resultData,
+        payload,
+    };
+}
+
+
+export function getGameInfo(gameParams) {
+    return {
+        type: GET_GAME_INFO,
+        gameParams,
+    };
+}
+export function getGameInfoSuccess(gameInfoData) {
+    return {
+        type: GET_GAME_INFO_SUCCESS,
+        gameInfoData,
+    };
+}
+export function getGameInfoFailed(payload) {
+    return {
+        type: GET_GAME_INFO_FAILED,
+        payload,
     };
 }
